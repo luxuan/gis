@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css">
+
+    <script>dojoConfig = { parseOnLoad:true }</script>
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
+
+    <script type="text/javascript"> 
+        dojo.require("dojo.parser");
+        dojo.require("dojo.data.ItemFileReadStore");
+        dojo.require("esri.map");
+
+/*
+        dojo.require("dijit/MenuBar");
+        dojo.require("dijit/MenuBarItem");
+        dojo.require("dijit/PopupMenuBarItem");
+        dojo.require("dijit/DropDownMenu");
+        dojo.require("dijit/MenuItem");
+        //dojo.require("esri.map");
+*/
+
+        dojo.require("dijit.MenuBar");
+        dojo.require("dijit.MenuBarItem");
+        dojo.require("dijit.PopupMenuBarItem");
+        dojo.require("dijit.DropDownMenu");
+        dojo.require("dijit.MenuItem");
+
+  dojo.require("dijit.Dialog");
+  dojo.require("dijit.form.TextBox");  
+  dojo.require("dijit.form.TimeTextBox");
+  dojo.require("dijit.form.Button");
+  dojo.require("dijit.form.DateTextBox");
+  dojo.require("dijit.form.FilteringSelect");
+
+dojo.require("dijit.form.CheckBox");
+dojo.require("dijit.Menu");
+dojo.require("dijit.CheckedMenuItem");
+
+
+      //dojo.require(["dijit/MenuBar", "dijit/MenuBarItem", "dijit/PopupMenuBarItem", "dijit/DropDownMenu", "dijit/MenuItem"]);
+
+        var map;
+        function init() {
+            esri.config.defaults.io.corsDetection=false;//屏蔽 Access-Control-Allow-Origin异常
+            map = new esri.Map("mapDiv", {
+                extent: new esri.geometry.Extent({ 
+                    "xmin": 90.53154754638672, "ymin": 23.68379211425781,
+                    "xmax": 126.32555389404297, "ymax": 42.82112121582031, 
+                    "spatialReference": { "wkid": 4326} })
+            });
+            map.addLayer(new esri.layers.ArcGISDynamicMapServiceLayer("http://localhost:8399/arcgis/rest/services/weather/MapServer"));
+            //http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer
+            //http://lius-pc:8399/arcgis/rest/services/weather/MapServer
+            //http://lius-pc:8399/arcgis/services/weather/ArcGISTiledMapServiceLayer//不能访问
+
+            dojo.connect(map, "onLoad", addPointGraphics);
+        }
+
+        function addPointGraphics() {
+            var symbol = new esri.symbol.SimpleMarkerSymbol();
+            symbol.setColor(new dojo.Color("#ffff00"));
+            
+            var store = new dojo.data.ItemFileReadStore({ url: "Data/PointData_v.json" });
+            var gotList = function(items, request) {
+                for (var i = 0; i < items.length; i++) {
+                    // getValue用于得到某个item的某个属性名称的值
+                    var attr = {
+                        "name": store.getValue(items[i], "name"),
+                        "url": store.getValue(items[i], "url")
+                    };
+                    var loc = new esri.geometry.Point(store.getValue(items[i], "x"), store.getValue(items[i], "y"), { wkid: 4326 });
+                    var graphic = new esri.Graphic(loc, symbol, attr, new esri.InfoTemplate("${name}", "${url}"));
+                    map.graphics.add(graphic);
+                }                
+            };
+            // 自定义函数，用于异常处理
+            var gotError = function(error, request) {
+                console.error("读文件请求失败！" + error);
+            };
+            store.fetch({ onComplete: gotList, onError: gotError, query: { id: "*"} });
+
+            dojo.connect(map.graphics, "onMouseOver", g_onMouseOverHandler);
+            dojo.connect(map.graphics, "onMouseOut", g_onMouseOutHandler);
+        }
+
+        dojo.addOnLoad(init);
+
+        function g_onMouseOutHandler(evt) {
+            map.infoWindow.hide();
+        }
+
+        function g_onMouseOverHandler(evt) {
+            map.infoWindow.setTitle(evt.graphic.attributes.name);
+            map.infoWindow.setContent(evt.graphic.attributes.url);
+            map.infoWindow.show(evt.screenPoint);
+        }
+    </script>
+</head>
+<body class="claro">
+    <div id="mapDiv" style="width:900px; height:600px; border:1px solid #000;">
+      <div style="position:absolute; left:650px; top:10px; z-Index:999;">
+
+
+<div data-dojo-type="dijit/MenuBar" id="navMenu">
+
+
+<div dojoType="dijit.PopupMenuBarItem"><!-- 不能是dijit.form.DropDownButton -->
+  <span>搜索</span>
+  <div dojoType="dijit.TooltipDialog" id="tooltipDlg" title="Enter Login information"
+    execute="console.log('submitted w/args:\n' + dojo.toJson(arguments[0], true));">
+    <table>
+      <tr>
+        <td><label for="user">User:</label></td>
+        <td><input dojoType=dijit.form.TextBox type="text" name="user" id="user"></td>
+      </tr>
+      <tr>
+        <td><label for="pwd">Password:</label></td>
+        <td><input dojoType=dijit.form.TextBox type="password" name="pwd" id="pwd"></td>
+      </tr>
+      <tr>
+        <td><label for="date2">Date:</label></td>
+        <td><input dojoType=dijit.form.DateTextBox name="date" id="date2"></td>
+      </tr>
+      <tr>
+        <td><label for="time2">Time:</label></td>
+        <td><input dojoType=dijit.form.TimeTextBox name="time" id="time2"></td>
+      </tr>
+      <tr>
+        <td><label for="combo">Pizza:</label></td>
+        <td>
+          <select dojoType=dijit.form.FilteringSelect name="combo" id="combo" hasDownArrow="true">
+            <option value="cheese">cheese</option>
+            <option value="pepperoni">pepperoni</option>
+            <option value="sausage">sausage</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center">
+          <button dojoType=dijit.form.Button type="submit" name="submit">Order</button>
+        </td>
+      </tr>
+    </table>
+    <div style="width: 300px;">Note: This tooltip dialog has a bunch of nested drop downs for testing keyboard and click handling</div>
+  </div>
+</div> 
+
+    |<div data-dojo-type="dijit.PopupMenuBarItem">
+        <span>图层</span>
+        <div data-dojo-type="dijit.Menu" id="inputPaddingMenu">
+            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="checked:true, onClick:function(){console.log('基站');}">基站</div>
+            <!--<div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:setTextBoxPadding">0px</div>-->
+            <!--data-dojo-props="onClick:setTextBoxPadding"不能有啊-->
+            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:function(){console.log('管网');}">管网</div>
+            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:function(){console.log('预警热点');}">预警热点</div>
+        </div>
+    </div>
+
+
+
+    |<div data-dojo-type="dijit/PopupMenuBarItem">
+        <span>工具</span>
+        <div data-dojo-type="dijit/DropDownMenu" id="editMenu">
+                            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut',
+                                    onClick:function(){console.log('测距')}">测距</div>
+                            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy',
+                                    onClick:function(){console.log('截图')}">截图</div>
+        </div>
+    </div>
+
+    |<div data-dojo-type="dijit/MenuBarItem">
+            OPT
+    </div>
+
+
+
+</div>
+
+
+<!--
+        <button data-dojo-type="dijit.form.Button" onClick="veTileLayer.setMapStyle(esri.virtualearth.VETiledLayer.MAP_STYLE_AERIAL);">搜索</button>
+        <button data-dojo-type="dijit.form.Button" onClick="veTileLayer.setMapStyle(esri.virtualearth.VETiledLayer.MAP_STYLE_AERIAL_WITH_LABELS)">工具</button>
+        <button data-dojo-type="dijit.form.Button" onClick="veTileLayer.setMapStyle(esri.virtualearth.VETiledLayer.MAP_STYLE_ROAD)">图层</button>
+
+-->
+      </div>
+    </div>
+</body>
+</html>

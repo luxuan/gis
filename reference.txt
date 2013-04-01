@@ -1,0 +1,13 @@
+
+按钮导航：
+http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/ve_layer.html
+
+Menu
+http://livedocs.dojotoolkit.org/dijit/MenuBar
+
+Dialog
+http://dojocampus.org/explorer/#Dijit_Dialog_Tooltip
+
+XMLHttpRequest cannot load http://localhost:8399/arcgis/rest/info?f=json. Origin http://localhost:8080 is not allowed by Access-Control-Allow-Origin.的错误
+在加载地图之前，添加如下代码：esri.config.defaults.io.corsDetection=false;
+http://bbs.esrichina-bj.cn/ESRI/viewthread.php?tid=117242
