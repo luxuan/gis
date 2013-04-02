@@ -2,13 +2,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>ArcGIS</title>
 
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/dojo/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/js/esri/css/esri.css">
 
     <script>dojoConfig = { parseOnLoad:true }</script>
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
+    <script src="app/BaseLayer.js"></script>
 
     <script type="text/javascript"> 
         dojo.require("dojo.parser");
@@ -45,6 +46,7 @@ dojo.require("dijit.CheckedMenuItem");
       //dojo.require(["dijit/MenuBar", "dijit/MenuBarItem", "dijit/PopupMenuBarItem", "dijit/DropDownMenu", "dijit/MenuItem"]);
 
         var map;
+        var baseLayer;
         function init() {
             esri.config.defaults.io.corsDetection=false;//屏蔽 Access-Control-Allow-Origin异常
             map = new esri.Map("mapDiv", {
@@ -57,53 +59,37 @@ dojo.require("dijit.CheckedMenuItem");
             //http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer
             //http://lius-pc:8399/arcgis/rest/services/weather/MapServer
             //http://lius-pc:8399/arcgis/services/weather/ArcGISTiledMapServiceLayer//不能访问
-
-            dojo.connect(map, "onLoad", addPointGraphics);
-        }
-
-        function addPointGraphics() {
-            var symbol = new esri.symbol.SimpleMarkerSymbol();
-            symbol.setColor(new dojo.Color("#ffff00"));
-            
-            var store = new dojo.data.ItemFileReadStore({ url: "Data/PointData_v.json" });
-            var gotList = function(items, request) {
-                for (var i = 0; i < items.length; i++) {
-                    // getValue用于得到某个item的某个属性名称的值
-                    var attr = {
-                        "name": store.getValue(items[i], "name"),
-                        "url": store.getValue(items[i], "url")
-                    };
-                    var loc = new esri.geometry.Point(store.getValue(items[i], "x"), store.getValue(items[i], "y"), { wkid: 4326 });
-                    var graphic = new esri.Graphic(loc, symbol, attr, new esri.InfoTemplate("${name}", "${url}"));
-                    map.graphics.add(graphic);
-                }                
-            };
-            // 自定义函数，用于异常处理
-            var gotError = function(error, request) {
-                console.error("读文件请求失败！" + error);
-            };
-            store.fetch({ onComplete: gotList, onError: gotError, query: { id: "*"} });
-
-            dojo.connect(map.graphics, "onMouseOver", g_onMouseOverHandler);
-            dojo.connect(map.graphics, "onMouseOut", g_onMouseOutHandler);
+            baseLayer = new BaseLayer(map, "Data/PointData_v.json", "#ffff00");
+            dojo.connect(map, "onLoad", defaultSetting);
         }
 
         dojo.addOnLoad(init);
 
-        function g_onMouseOutHandler(evt) {
-            map.infoWindow.hide();
+        function defaultSetting() {
+//            var baseLayerDiv = dojo.query('#baseLayerDiv');  //TODO check the div and set onchanged event
+        }
+        function changeBase(checked) {
+            console.log('changeBase', checked);
+            if(checked) {
+                baseLayer.show();
+            } else {
+                baseLayer.hide();
+            }
+        }
+        function changePipe(checked) {
+            console.log('changePipe', checked);
+//            baseLayer.hide();
+        }
+        function changeHot(checked) {
+            console.log('changeHot', checked);
+//            baseLayer.hide();
         }
 
-        function g_onMouseOverHandler(evt) {
-            map.infoWindow.setTitle(evt.graphic.attributes.name);
-            map.infoWindow.setContent(evt.graphic.attributes.url);
-            map.infoWindow.show(evt.screenPoint);
-        }
     </script>
 </head>
 <body class="claro">
     <div id="mapDiv" style="width:900px; height:600px; border:1px solid #000;">
-      <div style="position:absolute; left:650px; top:10px; z-Index:999;">
+      <div style="position:absolute; left:550px; top:10px; z-Index:999;">
 
 
 <div data-dojo-type="dijit/MenuBar" id="navMenu">
@@ -153,19 +139,27 @@ dojo.require("dijit.CheckedMenuItem");
     |<div data-dojo-type="dijit.PopupMenuBarItem">
         <span>图层</span>
         <div data-dojo-type="dijit.Menu" id="inputPaddingMenu">
-            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="checked:true, onClick:function(){console.log('基站');}">基站</div>
+            <div data-dojo-type="dijit.CheckedMenuItem" id="baseLayerDiv" data-dojo-props="onChange:changeBase" >基站</div>
             <!--<div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:setTextBoxPadding">0px</div>-->
             <!--data-dojo-props="onClick:setTextBoxPadding"不能有啊-->
-            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:function(){console.log('管网');}">管网</div>
-            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:function(){console.log('预警热点');}">预警热点</div>
+            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">管网</div>
+            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:changeHot">预警热点</div>
+        </div>
+    </div>
+
+    |<div data-dojo-type="dijit/PopupMenuBarItem">
+        <span>分析</span>
+        <div data-dojo-type="dijit/DropDownMenu">
+            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut', onClick:function(){console.log('爆管')}">爆管</div>
+            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy', onClick:function(){console.log('漏水')}">漏水</div>
+            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy', onClick:function(){console.log('分布')}">分布</div>
         </div>
     </div>
 
 
-
     |<div data-dojo-type="dijit/PopupMenuBarItem">
         <span>工具</span>
-        <div data-dojo-type="dijit/DropDownMenu" id="editMenu">
+        <div data-dojo-type="dijit/DropDownMenu" >
                             <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut',
                                     onClick:function(){console.log('测距')}">测距</div>
                             <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy',
