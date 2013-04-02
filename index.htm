@@ -89,99 +89,78 @@ dojo.require("dijit.CheckedMenuItem");
 </head>
 <body class="claro">
     <div id="mapDiv" style="width:900px; height:600px; border:1px solid #000;">
-      <div style="position:absolute; left:550px; top:10px; z-Index:999;">
+        <div style="position:absolute; left:450px; top:10px; z-Index:999;">
+
+            <div data-dojo-type="dijit/MenuBar" id="navMenu">
 
 
-<div data-dojo-type="dijit/MenuBar" id="navMenu">
+                <div dojoType="dijit.PopupMenuBarItem"><!-- 不能是dijit.form.DropDownButton -->
+                  <span>搜索</span>
+                  <div dojoType="dijit.TooltipDialog" id="tooltipDlg" title="Enter Login information"
+                    execute="console.log('submitted w/args:\n' + dojo.toJson(arguments[0], true));">
+                    <table>
+                      <tr>
+                        <td><label for="user">关键字:</label></td>
+                        <td><input dojoType=dijit.form.TextBox type="text" name="user" id="user"></td>
+                      </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <button dojoType=dijit.form.Button type="submit" name="submit">搜索</button>
+                            </td>
+                        </tr>
 
+                    </table>
+                  </div>
+                </div>
 
-<div dojoType="dijit.PopupMenuBarItem"><!-- 不能是dijit.form.DropDownButton -->
-  <span>搜索</span>
-  <div dojoType="dijit.TooltipDialog" id="tooltipDlg" title="Enter Login information"
-    execute="console.log('submitted w/args:\n' + dojo.toJson(arguments[0], true));">
-    <table>
-      <tr>
-        <td><label for="user">User:</label></td>
-        <td><input dojoType=dijit.form.TextBox type="text" name="user" id="user"></td>
-      </tr>
-      <tr>
-        <td><label for="pwd">Password:</label></td>
-        <td><input dojoType=dijit.form.TextBox type="password" name="pwd" id="pwd"></td>
-      </tr>
-      <tr>
-        <td><label for="date2">Date:</label></td>
-        <td><input dojoType=dijit.form.DateTextBox name="date" id="date2"></td>
-      </tr>
-      <tr>
-        <td><label for="time2">Time:</label></td>
-        <td><input dojoType=dijit.form.TimeTextBox name="time" id="time2"></td>
-      </tr>
-      <tr>
-        <td><label for="combo">Pizza:</label></td>
-        <td>
-          <select dojoType=dijit.form.FilteringSelect name="combo" id="combo" hasDownArrow="true">
-            <option value="cheese">cheese</option>
-            <option value="pepperoni">pepperoni</option>
-            <option value="sausage">sausage</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" align="center">
-          <button dojoType=dijit.form.Button type="submit" name="submit">Order</button>
-        </td>
-      </tr>
-    </table>
-    <div style="width: 300px;">Note: This tooltip dialog has a bunch of nested drop downs for testing keyboard and click handling</div>
-  </div>
-</div> 
+                |<div data-dojo-type="dijit.PopupMenuBarItem">
+                    <span>图层</span>
+                    <div data-dojo-type="dijit.Menu">
+                        <!--<div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:setTextBoxPadding">0px</div>-->
+                        <!--data-dojo-props="onClick:setTextBoxPadding"不能有啊-->
+                        <div data-dojo-type="dijit.CheckedMenuItem" id="baseLayerDiv" data-dojo-props="onChange:changeBase" >基站</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">管网</div>
+                    </div>
+                </div>
 
-    |<div data-dojo-type="dijit.PopupMenuBarItem">
-        <span>图层</span>
-        <div data-dojo-type="dijit.Menu" id="inputPaddingMenu">
-            <div data-dojo-type="dijit.CheckedMenuItem" id="baseLayerDiv" data-dojo-props="onChange:changeBase" >基站</div>
-            <!--<div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:setTextBoxPadding">0px</div>-->
-            <!--data-dojo-props="onClick:setTextBoxPadding"不能有啊-->
-            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">管网</div>
-            <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onClick:changeHot">预警热点</div>
-        </div>
-    </div>
+                |<div data-dojo-type="dijit/PopupMenuBarItem">
+                    <span>分布</span>
+                    <div data-dojo-type="dijit.Menu">
+                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changeBase">水质</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">水压</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">流量</div>
+                    </div>
+                </div>
 
-    |<div data-dojo-type="dijit/PopupMenuBarItem">
-        <span>分析</span>
-        <div data-dojo-type="dijit/DropDownMenu">
-            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut', onClick:function(){console.log('爆管')}">爆管</div>
-            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy', onClick:function(){console.log('漏水')}">漏水</div>
-            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy', onClick:function(){console.log('分布')}">分布</div>
-        </div>
-    </div>
+                |<div data-dojo-type="dijit/PopupMenuBarItem">
+                <span>异常告警</span>
+                <div data-dojo-type="dijit.Menu">
+                    <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changeBase">水质</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">水压</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">漏水</div>
+                </div>
+                </div>
 
+                |<div data-dojo-type="dijit/MenuBarItem">
+                    爆管
+                </div>
 
-    |<div data-dojo-type="dijit/PopupMenuBarItem">
-        <span>工具</span>
-        <div data-dojo-type="dijit/DropDownMenu" >
-                            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut',
-                                    onClick:function(){console.log('测距')}">测距</div>
-                            <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy',
-                                    onClick:function(){console.log('截图')}">截图</div>
-        </div>
-    </div>
-
-    |<div data-dojo-type="dijit/MenuBarItem">
-            OPT
-    </div>
+                |<div data-dojo-type="dijit/PopupMenuBarItem">
+                    <span>工具</span>
+                    <div data-dojo-type="dijit/DropDownMenu" >
+                        <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut',
+                                                onClick:function(){console.log('测距')}">测距</div>
+                        <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy',
+                                                onClick:function(){console.log('截图')}">截图</div>
+                        <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy',
+                                                onClick:function(){console.log('搜索')}">搜索</div>
+                    </div>
+                </div>
 
 
 
-</div>
+            </div>
 
-
-<!--
-        <button data-dojo-type="dijit.form.Button" onClick="veTileLayer.setMapStyle(esri.virtualearth.VETiledLayer.MAP_STYLE_AERIAL);">搜索</button>
-        <button data-dojo-type="dijit.form.Button" onClick="veTileLayer.setMapStyle(esri.virtualearth.VETiledLayer.MAP_STYLE_AERIAL_WITH_LABELS)">工具</button>
-        <button data-dojo-type="dijit.form.Button" onClick="veTileLayer.setMapStyle(esri.virtualearth.VETiledLayer.MAP_STYLE_ROAD)">图层</button>
-
--->
       </div>
     </div>
 </body>
