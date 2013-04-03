@@ -48,6 +48,8 @@ dojo.require("dijit.CheckedMenuItem");
 
         var map;
         var baseLayer;
+        var serviceLayer;
+        var layerDefinitions = [];
         function init() {
             esri.config.defaults.io.corsDetection=false;//屏蔽 Access-Control-Allow-Origin异常
             map = new esri.Map("mapDiv", {
@@ -56,7 +58,19 @@ dojo.require("dijit.CheckedMenuItem");
                     "xmax": 126.32555389404297, "ymax": 42.82112121582031, 
                     "spatialReference": { "wkid": 4326} })
             });
-            map.addLayer(new esri.layers.ArcGISDynamicMapServiceLayer("http://localhost:8399/arcgis/rest/services/weather/MapServer"));
+
+            var url = 'http://localhost:8399/arcgis/rest/services/weather/MapServer';
+            serviceLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url);//,{id: "省市"}
+            //displayLevels仅适用于tiled和bing层
+            layerDefinitions[0] = "RES1_4M_ID > 999999";  //"id":0,"name":"省会城市",
+            layerDefinitions[1] = "RPOLY_ > 2000";  //"id":1,"name":"市界",
+            //layerDefinitions[2] = "RES1_4M_ID > 1000";  //id":2,"name":"县区_Mask"
+            //layerDefinitions[3] = "RES1_4M_ID > 1000";  //"id":3,"name":"省市_Mask"
+            layerDefinitions[4] = "BOU2_4M_ > 500";  //id":4,"name":"省市"
+            layerDefinitions[5] = "AREA > 0.2";  //"id":5,"name":"县区",
+            serviceLayer.setLayerDefinitions(layerDefinitions);
+
+            map.addLayer(serviceLayer);
             //http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer
             //http://lius-pc:8399/arcgis/rest/services/weather/MapServer
             //http://lius-pc:8399/arcgis/services/weather/ArcGISTiledMapServiceLayer//不能访问
@@ -74,6 +88,7 @@ dojo.require("dijit.CheckedMenuItem");
         function defaultSetting() {
 //            var baseLayerDiv = dojo.query('#baseLayerDiv');  //TODO check the div and set onchanged event
         }
+
         function changeBase(checked) {
             console.log('changeBase', checked);
             if(checked) {
@@ -82,9 +97,15 @@ dojo.require("dijit.CheckedMenuItem");
                 baseLayer.hide();
             }
         }
+
         function changePipe(checked) {
             console.log('changePipe', checked);
-//            baseLayer.hide();
+            if(checked) {
+                layerDefinitions[0] = "RES1_4M_ID > 500";  //"id":0,"name":"省会城市",
+            } else {
+                layerDefinitions[0] = "RES1_4M_ID > 999999";
+            }
+            serviceLayer.setLayerDefinitions(layerDefinitions);
         }
         function changeHot(checked) {
             console.log('changeHot', checked);
@@ -132,18 +153,18 @@ dojo.require("dijit.CheckedMenuItem");
                 |<div data-dojo-type="dijit/PopupMenuBarItem">
                     <span>分布</span>
                     <div data-dojo-type="dijit.Menu">
-                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changeBase">水质</div>
-                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">水压</div>
-                        <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">流量</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" >水质</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" >水压</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" >流量</div>
                     </div>
                 </div>
 
                 |<div data-dojo-type="dijit/PopupMenuBarItem">
                 <span>异常告警</span>
                 <div data-dojo-type="dijit.Menu">
-                    <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changeBase">水质</div>
-                    <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">水压</div>
-                    <div data-dojo-type="dijit.CheckedMenuItem" data-dojo-props="onChange:changePipe">漏水</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" >水质</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" >水压</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" >漏水</div>
                 </div>
                 </div>
 
