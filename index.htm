@@ -10,6 +10,7 @@
     <script>dojoConfig = { parseOnLoad:true }</script>
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
     <script src="app/BaseLayer.js"></script>
+    <script src="app/ExtentListener.js"></script>
 
     <script type="text/javascript"> 
         dojo.require("dojo.parser");
@@ -60,6 +61,11 @@ dojo.require("dijit.CheckedMenuItem");
             //http://lius-pc:8399/arcgis/rest/services/weather/MapServer
             //http://lius-pc:8399/arcgis/services/weather/ArcGISTiledMapServiceLayer//不能访问
             baseLayer = new BaseLayer(map, "Data/PointData_v.json", "#ffff00");
+
+            var listener = new ExtentListener(map);
+            listener.addObserver(baseLayer);
+            listener.startListen();//增加范围变化监听
+
             dojo.connect(map, "onLoad", defaultSetting);
         }
 

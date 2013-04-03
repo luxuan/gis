@@ -6,23 +6,24 @@ dojo.declare(
         _url: "",
         _color: "#ffff00",
         _graphics: [],
-        _level: -1,
-        _xCenter: -1,
-        _yCenter: -1,
+        _xmin: -1,
+        _xmax: -1,
+        _ymin: -1,
+        _ymax: -1,
         _isShow: false,
-        _isUpdate: false,
+        _isUpdate: true,
         
         constructor: function(map, url, color) {
             this._map = map;
             this._url = url;
             this._color = color;
-            this._isUpdate = true;
         },
 
-        update: function(level, xCenter, yCenter){
-            this._level = level;
-            this._xCenter = xCenter;
-            this._yCenter = yCenter;
+        update: function(extent){
+            this._xmin = extent.xmin;
+            this._xmax = extent.xmax;
+            this._ymin = extent.ymin;
+            this._ymax = extent.ymax;
             this._isUpdate = true;
             if(this._isShow) { //刷新显示
                 this.hide();
@@ -32,7 +33,8 @@ dojo.declare(
 
         load: function(gotList) { //gotList = function(items, request)
             //ItemFileReadStore有缓存，只要是使用过的url均从url中取
-            var url = this._url + '?level=' + this._level + '&x=' + this._xCenter + '&y=' + this._yCenter;
+            var url = this._url + '?xmin=' + this._xmin + '&xmax=' + this._xmax
+                + '&ymin=' + this._ymin + '&ymax=' + this._ymax;
             var store = new dojo.data.ItemFileReadStore({ url: url });
             // 自定义函数，用于异常处理
             var gotError = function(error, request) {
@@ -98,6 +100,10 @@ dojo.declare(
 
             dojo.connect(map.graphics, "onMouseOver", gOnMouseOverHandler);
             dojo.connect(map.graphics, "onMouseOut", gOnMouseOutHandler);
+
+
+
+
         }
 
     }
