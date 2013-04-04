@@ -1,5 +1,9 @@
 todo
 0. 同一个xmd，怎么发不成不同的图层，或者程序怎么限定
+
 1. 控制图层显示
 2. 如何读取图层中的属性
 3. 根据关键字过滤属性
+
+DynamicMapServiceLayer/TiledMapServiceLayer图层没有交互监听
+GraphicsLayer(map.graphics，被加入到map中esri.Graphic的集合，Graphic本身没有监听函数)有交互监听,

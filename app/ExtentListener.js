@@ -30,6 +30,26 @@ dojo.declare(
                 });
             };
             dojo.connect(me._map, "onExtentChange", notifyObservers);
+
+            var gOnMouseOutHandler = function(evt) {
+                me._map.infoWindow.hide();
+            };
+            var gOnMouseOverHandler = function(evt) {
+                dojo.forEach(me._layers, function(layer, i){
+                    if(layer.setInfoWindow(evt, me._map.infoWindow)){
+                        me._map.infoWindow.show(evt.screenPoint);
+                        return false;
+                    }
+                });
+            };
+
+            //me._map.graphics初始状态是null，需要有layer加进来后才能设置监听;
+            dojo.connect(me._map, "onLayerAdd", function(layer){
+                //不能监听图层上的某个特定元素
+                dojo.connect(me._map.graphics, "onMouseOver", gOnMouseOverHandler);
+                dojo.connect(me._map.graphics, "onMouseOut", gOnMouseOutHandler);
+            });
+
             /*var onZoomEnd = function(extent, zoomFactor, anchor, level){
              console.log('onZoomEnd  extent, zoomFactor, anchor, level',extent, zoomFactor, anchor, level);
              };

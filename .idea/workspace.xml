@@ -2,21 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="648545bb-a12f-4f2d-ab7f-3ff3de580841" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/SearchLayer.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/SpotLayer.js" />
       <change type="DELETED" beforePath="E:\course_master\giswater\arcgis_project\web\gis\form.js" afterPath="" />
       <change type="DELETED" beforePath="E:\course_master\giswater\arcgis_project\web\gis\~$（实现参考）.docx" afterPath="" />
       <change type="DELETED" beforePath="E:\course_master\giswater\arcgis_project\web\gis\~WRL1122.tmp" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/ExtentListener.js" afterPath="$PROJECT_DIR$/app/ExtentListener.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.htm" afterPath="$PROJECT_DIR$/index.htm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/todo_liubin.txt" afterPath="$PROJECT_DIR$/todo_liubin.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="E:\course_master\giswater\arcgis_project\web\gis\app\BaseLayer.js" afterPath="$PROJECT_DIR$/app/PipeLayer.js" />
     </list>
     <ignored path="gis.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365001771340" ignored="false" />
+    <file path="/Dummy.txt" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365089018921" ignored="false" />
     <file path="/BaseLayer.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1364985412731" ignored="false" />
-    <file path="/index.htm" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365004455195" ignored="false" />
+    <file path="/index.htm" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365091330081" ignored="false" />
     <file path="$PROJECT_DIR$/../baidu/app/controller/Select.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1364909670148" ignored="false" />
     <file path="/Select.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1364909658706" ignored="false" />
-    <file path="/ExtentListener.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1364987641984" ignored="false" />
-    <file path="/todo_liubin.txt" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365004938384" ignored="false" />
+    <file path="/ExtentListener.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365084705882" ignored="false" />
+    <file path="/todo_liubin.txt" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365064093361" ignored="false" />
+    <file path="/PipeLayer.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365085346044" ignored="false" />
+    <file path="/SpotLayer.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365085665543" ignored="false" />
+    <file path="/SearchLayer.js" changelist="648545bb-a12f-4f2d-ab7f-3ff3de580841" time="1365091049836" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,11 +47,17 @@
       <file leaf-file-name="index.htm" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="178" column="95" selection-start="7755" selection-end="7755" vertical-scroll-proportion="0.5467197">
-              <folding>
-                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state line="137" column="50" selection-start="5271" selection-end="5271" vertical-scroll-proportion="0.42718446">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SearchLayer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/SearchLayer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="147" column="34" selection-start="5741" selection-end="5741" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -51,7 +65,16 @@
       <file leaf-file-name="ExtentListener.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/ExtentListener.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="36" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
+            <state line="39" column="63" selection-start="1157" selection-end="1168" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PipeLayer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/PipeLayer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="14" selection-start="759" selection-end="759" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -60,7 +83,16 @@
       <file leaf-file-name="todo_liubin.txt" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/todo_liubin.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="29" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
+            <state line="7" column="79" selection-start="125" selection-end="125" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpotLayer.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/SpotLayer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="14" selection-start="493" selection-end="493" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -88,8 +120,11 @@
         <option value="$PROJECT_DIR$/form.html" />
         <option value="$PROJECT_DIR$/ExtentListener.js" />
         <option value="$PROJECT_DIR$/app/BaseLayer.js" />
-        <option value="$PROJECT_DIR$/app/ExtentListener.js" />
         <option value="$PROJECT_DIR$/todo_liubin.txt" />
+        <option value="$PROJECT_DIR$/app/ExtentListener.js" />
+        <option value="$PROJECT_DIR$/app/SpotLayer.js" />
+        <option value="$PROJECT_DIR$/app/PipeLayer.js" />
+        <option value="$PROJECT_DIR$/app/SearchLayer.js" />
         <option value="$PROJECT_DIR$/index.htm" />
       </list>
     </option>
@@ -126,6 +161,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -174,7 +210,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -183,8 +218,13 @@
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../baidu" />
     <property name="FullScreen" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\course_master\giswater\arcgis_project\web\gis\app" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
@@ -231,13 +271,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.07892777" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929993" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -313,13 +353,24 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/app/ExtentListener.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="36" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/todo_liubin.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="29" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.htm">
       <provider selected="true" editor-type-id="text-editor">
         <state line="64" column="14" selection-start="2590" selection-end="2590" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -340,10 +391,7 @@
     <entry file="file://$PROJECT_DIR$/index.htm">
       <provider selected="true" editor-type-id="text-editor">
         <state line="161" column="19" selection-start="7341" selection-end="7341" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -352,7 +400,7 @@
         <state line="34" column="0" selection-start="1291" selection-end="1474" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/BaseLayer.js">
+    <entry file="file://$PROJECT_DIR$/app/SpotLayer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="31" selection-start="472" selection-end="472" vertical-scroll-proportion="0.0">
           <folding />
@@ -369,34 +417,45 @@
         <state line="34" column="0" selection-start="1291" selection-end="1474" vertical-scroll-proportion="0.65909094" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/BaseLayer.js">
+    <entry file="file://$PROJECT_DIR$/todo_liubin.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="27" selection-start="2244" selection-end="2251" vertical-scroll-proportion="1.6606822">
+        <state line="7" column="79" selection-start="125" selection-end="125" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/todo_liubin.txt">
+    <entry file="file://$PROJECT_DIR$/app/SpotLayer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="29" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
+        <state line="22" column="14" selection-start="493" selection-end="493" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/ExtentListener.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="36" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
+        <state line="39" column="63" selection-start="1157" selection-end="1168" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/PipeLayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="14" selection-start="759" selection-end="759" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/SearchLayer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="147" column="34" selection-start="5741" selection-end="5741" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.htm">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="178" column="95" selection-start="7755" selection-end="7755" vertical-scroll-proportion="0.5467197">
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state line="137" column="50" selection-start="5271" selection-end="5271" vertical-scroll-proportion="0.42718446">
+          <folding />
         </state>
       </provider>
     </entry>

@@ -9,7 +9,9 @@
 
     <script>dojoConfig = { parseOnLoad:true }</script>
     <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.4/"></script>
-    <script src="app/BaseLayer.js"></script>
+    <script src="app/SpotLayer.js"></script>
+    <script src="app/PipeLayer.js"></script>
+    <script src="app/SearchLayer.js"></script>
     <script src="app/ExtentListener.js"></script>
 
     <script type="text/javascript"> 
@@ -47,14 +49,16 @@ dojo.require("dijit.CheckedMenuItem");
       //dojo.require(["dijit/MenuBar", "dijit/MenuBarItem", "dijit/PopupMenuBarItem", "dijit/DropDownMenu", "dijit/MenuItem"]);
 
         var map;
-        var baseLayer;
+        var spotLayer;
+        var pipeLayer;
+        var searchLayer;
         var serviceLayer;
         var layerDefinitions = [];
         function init() {
             esri.config.defaults.io.corsDetection=false;//屏蔽 Access-Control-Allow-Origin异常
             map = new esri.Map("mapDiv", {
                 extent: new esri.geometry.Extent({ 
-                    "xmin": 90.53154754638672, "ymin": 23.68379211425781,
+                    "xmin": 90.53154754638670, "ymin": 23.68379211425781,
                     "xmax": 126.32555389404297, "ymax": 42.82112121582031, 
                     "spatialReference": { "wkid": 4326} })
             });
@@ -63,24 +67,30 @@ dojo.require("dijit.CheckedMenuItem");
             serviceLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url);//,{id: "省市"}
             //displayLevels仅适用于tiled和bing层
             layerDefinitions[0] = "RES1_4M_ID > 999999";  //"id":0,"name":"省会城市",
-            layerDefinitions[1] = "RPOLY_ > 2000";  //"id":1,"name":"市界",
-            //layerDefinitions[2] = "RES1_4M_ID > 1000";  //id":2,"name":"县区_Mask"
-            //layerDefinitions[3] = "RES1_4M_ID > 1000";  //"id":3,"name":"省市_Mask"
-            layerDefinitions[4] = "BOU2_4M_ > 500";  //id":4,"name":"省市"
-            layerDefinitions[5] = "AREA > 0.2";  //"id":5,"name":"县区",
+//            layerDefinitions[1] = "RPOLY_ > 2000";  //"id":1,"name":"市界",
+//            layerDefinitions[4] = "BOU2_4M_ > 500";  //id":4,"name":"省市"
+//            layerDefinitions[5] = "AREA > 0.2";  //"id":5,"name":"县区",
             serviceLayer.setLayerDefinitions(layerDefinitions);
+            //serviceLayer.setVisibleLayers([5,4,3,2,1]);不能正常显示
 
             map.addLayer(serviceLayer);
             //http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer
             //http://lius-pc:8399/arcgis/rest/services/weather/MapServer
             //http://lius-pc:8399/arcgis/services/weather/ArcGISTiledMapServiceLayer//不能访问
-            baseLayer = new BaseLayer(map, "Data/PointData_v.json", "#ffff00");
+
+            spotLayer = new SpotLayer(map, "Data/PointData_v.json", "#ffff00");
+            pipeLayer = new PipeLayer(map, url);
+            //var turl = "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer";
+            searchLayer = new SearchLayer(map, url);
 
             var listener = new ExtentListener(map);
-            listener.addObserver(baseLayer);
+            listener.addObserver(spotLayer)
+                    .addObserver(pipeLayer)
+                    .addObserver(searchLayer);
             listener.startListen();//增加范围变化监听
 
             dojo.connect(map, "onLoad", defaultSetting);
+
         }
 
         dojo.addOnLoad(init);
@@ -92,24 +102,29 @@ dojo.require("dijit.CheckedMenuItem");
         function changeBase(checked) {
             console.log('changeBase', checked);
             if(checked) {
-                baseLayer.show();
+                spotLayer.show();
             } else {
-                baseLayer.hide();
+                spotLayer.hide();
             }
         }
 
         function changePipe(checked) {
             console.log('changePipe', checked);
             if(checked) {
-                layerDefinitions[0] = "RES1_4M_ID > 500";  //"id":0,"name":"省会城市",
+                pipeLayer.show();
             } else {
-                layerDefinitions[0] = "RES1_4M_ID > 999999";
+                pipeLayer.hide();
             }
-            serviceLayer.setLayerDefinitions(layerDefinitions);
         }
         function changeHot(checked) {
             console.log('changeHot', checked);
 //            baseLayer.hide();
+        }
+
+        function searchKeyUp(event) {
+            if(event.keyIdentifier == 'Enter') {
+                dojo.byId('submitId').click();
+            }
         }
 
     </script>
@@ -120,19 +135,20 @@ dojo.require("dijit.CheckedMenuItem");
 
             <div data-dojo-type="dijit/MenuBar" id="navMenu">
 
-
+               <!-- TODO focus the input field -->
                 <div dojoType="dijit.PopupMenuBarItem"><!-- 不能是dijit.form.DropDownButton -->
                   <span>搜索</span>
                   <div dojoType="dijit.TooltipDialog" id="tooltipDlg" title="Enter Login information"
-                    execute="console.log('submitted w/args:\n' + dojo.toJson(arguments[0], true));">
+                       data-dojo-props="onKeyUp:searchKeyUp"
+                       execute="searchLayer.show(arguments[0].keyword);">
                     <table>
                       <tr>
                         <td><label for="user">关键字:</label></td>
-                        <td><input dojoType=dijit.form.TextBox type="text" name="user" id="user"></td>
+                        <td><input dojoType=dijit.form.TextBox type="text" name="keyword" id="keywordId"></td>
                       </tr>
                         <tr>
                             <td colspan="2" align="center">
-                                <button dojoType=dijit.form.Button type="submit" name="submit">搜索</button>
+                                <button dojoType=dijit.form.Button type="submit" id="submitId" name="submit">搜索</button>
                             </td>
                         </tr>
 

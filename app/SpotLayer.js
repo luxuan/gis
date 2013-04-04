@@ -1,5 +1,5 @@
 dojo.declare(
-    "BaseLayer", // 类名
+    "SpotLayer", // 类名
     null, // 无父类，使用null
     {    
         _map: null,
@@ -20,6 +20,7 @@ dojo.declare(
         },
 
         update: function(extent){
+            //console.log('spot update');
             this._xmin = extent.xmin;
             this._xmax = extent.xmax;
             this._ymin = extent.ymin;
@@ -31,32 +32,7 @@ dojo.declare(
             }
         },
 
-        load: function(gotList) { //gotList = function(items, request)
-            //ItemFileReadStore有缓存，只要是使用过的url均从url中取
-            var url = this._url + '?xmin=' + this._xmin + '&xmax=' + this._xmax
-                + '&ymin=' + this._ymin + '&ymax=' + this._ymax;
-            var store = new dojo.data.ItemFileReadStore({ url: url });
-            // 自定义函数，用于异常处理
-            var gotError = function(error, request) {
-                console.error("读文件请求失败！" + error);
-            };
-            store.fetch({ onComplete: gotList, onError: gotError, query: { id: "*"} });
-        },
 
-        hide: function() {
-            this._isShow = false;
-            var map = this._map;
-            dojo.forEach(this._graphics, function(entry, i){
-                map.graphics.remove(entry);
-            });
-        },
-        loadedShow: function() {
-            var map = this._map;
-            dojo.forEach(this._graphics, function(entry, i){
-                map.graphics.add(entry);
-            });
-            this.addMouseListener();    //增加鼠标监听
-        },
         show: function() {
             this._isShow = true;
             if(this._isUpdate) {
@@ -77,6 +53,7 @@ dojo.declare(
                         };
                         var loc = new esri.geometry.Point(items[i].x[0], items[i].y[0], { wkid: 4326 });
                         var graphic = new esri.Graphic(loc, symbol, attr, new esri.InfoTemplate("${name}", "${url}"));
+                        graphic.spotTag = true; //graphic.geometry.type=="point"
                         graphics.push(graphic);
                     }
                     me.loadedShow();
@@ -87,24 +64,39 @@ dojo.declare(
 
         },
 
-        addMouseListener: function() {
+        hide: function() {
+            this._isShow = false;
             var map = this._map;
-            var gOnMouseOutHandler = function(evt) {
-                map.infoWindow.hide();
+            dojo.forEach(this._graphics, function(graphic, i){
+                map.graphics.remove(graphic); //graphic.hide()
+            });
+        },
+        loadedShow: function() {
+            var map = this._map;
+            dojo.forEach(this._graphics, function(entry, i){
+                map.graphics.add(entry);
+            });
+        },
+        setInfoWindow: function(evt, infoWindow) {
+            if(evt.graphic.spotTag) { //创建时标记过：graphic.spotTag = true;
+                infoWindow.setTitle(evt.graphic.attributes.name);
+                infoWindow.setContent(evt.graphic.attributes.url);
+                return true;
+            } else return false;
+        },
+
+        load: function(gotList) { //gotList = function(items, request)
+            //ItemFileReadStore有缓存，只要是使用过的url均从url中取
+            var url = this._url + '?xmin=' + this._xmin + '&xmax=' + this._xmax
+                + '&ymin=' + this._ymin + '&ymax=' + this._ymax;
+            var store = new dojo.data.ItemFileReadStore({ url: url });
+            // 自定义函数，用于异常处理
+            var gotError = function(error, request) {
+                console.error("读文件请求失败！" + error);
             };
-            var gOnMouseOverHandler = function(evt) {
-                map.infoWindow.setTitle(evt.graphic.attributes.name);
-                map.infoWindow.setContent(evt.graphic.attributes.url);
-                map.infoWindow.show(evt.screenPoint);
-            };
-
-            dojo.connect(map.graphics, "onMouseOver", gOnMouseOverHandler);
-            dojo.connect(map.graphics, "onMouseOut", gOnMouseOutHandler);
-
-
-
-
+            store.fetch({ onComplete: gotList, onError: gotError, query: { id: "*"} });
         }
+
 
     }
 );
