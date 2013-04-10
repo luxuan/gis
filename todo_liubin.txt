@@ -1,9 +1,17 @@
 todo
-0. 同一个xmd，怎么发不成不同的图层，或者程序怎么限定
+1. 实现分布显示
+2. 爆管分析
 
-1. 控制图层显示
-2. 如何读取图层中的属性
-3. 根据关键字过滤属性
+
+
+
+//////////////
+0. 同一个xmd，怎么发不成不同的图层，或者程序怎么限定 （即1中控制图层显示）
+
+1. 控制图层显示 setVisibleLayers([0])或 setLayerDefinitions(layerDefinitions/* 数组 */);
+2. 如何读取图层中的属性 /* ？渲染器？每次传输图层使用的是图片传输，因此还没有找到读取图层中元素的属性方法 */
+3. 根据关键字过滤属性  /* _findTask.execute(this._findParams, showResults); */
 
 DynamicMapServiceLayer/TiledMapServiceLayer图层没有交互监听
 GraphicsLayer(map.graphics，被加入到map中esri.Graphic的集合，Graphic本身没有监听函数)有交互监听,
+

@@ -63,7 +63,7 @@ dojo.require("dijit.CheckedMenuItem");
                     "spatialReference": { "wkid": 4326} })
             });
 
-            var url = 'http://localhost:8399/arcgis/rest/services/weather/MapServer';
+            var url = 'http://localhost:8399/arcgis/rest/services/ChinaWeatherRailway/MapServer';
             serviceLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url);//,{id: "省市"}
             //displayLevels仅适用于tiled和bing层
             layerDefinitions[0] = "RES1_4M_ID > 999999";  //"id":0,"name":"省会城市",
@@ -178,9 +178,9 @@ dojo.require("dijit.CheckedMenuItem");
                 |<div data-dojo-type="dijit/PopupMenuBarItem">
                 <span>异常告警</span>
                 <div data-dojo-type="dijit.Menu">
-                    <div data-dojo-type="dijit.CheckedMenuItem" >水质</div>
-                    <div data-dojo-type="dijit.CheckedMenuItem" >水压</div>
-                    <div data-dojo-type="dijit.CheckedMenuItem" >漏水</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" checked >水质</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" checked >水压</div>
+                    <div data-dojo-type="dijit.CheckedMenuItem" checked >漏水</div>
                 </div>
                 </div>
 
