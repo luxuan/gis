@@ -44,6 +44,7 @@
 dojo.require("dijit.form.CheckBox");
 dojo.require("dijit.Menu");
 dojo.require("dijit.CheckedMenuItem");
+dojo.require("esri.dijit.Measurement");
 
 
       //dojo.require(["dijit/MenuBar", "dijit/MenuBarItem", "dijit/PopupMenuBarItem", "dijit/DropDownMenu", "dijit/MenuItem"]);
@@ -126,11 +127,37 @@ dojo.require("dijit.CheckedMenuItem");
                 dojo.byId('submitId').click();
             }
         }
+        /**function openWidget(checked) {
+            console.log('openWidget', checked);
+            if(checked) {
+                measurementWidget.show();
+            } else {
+                measurementWidge.hide();
+            }
+        } */
+        var measurement;
+        function openWidget(checked) {
+            console.log('openWidget', checked);
+            if(checked) {
+                if(!measurement) {
+                    //console.log('new');
+                    measurement = new esri.dijit.Measurement({
+                        map: map
+                    }, dojo.byId('measurementDiv'));
+                    measurement.startup();
+                }
+                measurement.show();
+            } else {
+                //console.log('destory');
+                measurement.hide();
+                measurement.clearResult();
+            }
 
+        }
     </script>
 </head>
 <body class="claro">
-    <div id="mapDiv" style="width:900px; height:600px; border:1px solid #000;">
+    <div id="mapDiv" style="width:1000px; height:600px; border:1px solid #000;">
         <div style="position:absolute; left:450px; top:10px; z-Index:999;">
 
             <div data-dojo-type="dijit/MenuBar" id="navMenu">
@@ -191,14 +218,17 @@ dojo.require("dijit.CheckedMenuItem");
                 |<div data-dojo-type="dijit/PopupMenuBarItem">
                     <span>工具</span>
                     <div data-dojo-type="dijit/DropDownMenu" >
-                        <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCut',
-                                                onClick:function(){console.log('测距')}">测距</div>
+                        <div data-dojo-type="dijit.CheckedMenuItem" id="measurement" data-dojo-props="onChange:openWidget" >测距</div>
                         <div data-dojo-type="dijit/MenuItem" data-dojo-props="iconClass:'dijitEditorIcon dijitEditorIconCopy',
                                                 onClick:function(){console.log('截图')}">截图</div>
                     </div>
                 </div>
 
 
+
+            </div>
+            <div style="position:absolute; right:10px; top:30px; z-Index:999;">
+                <div id="measurementDiv"></div>
 
             </div>
 
