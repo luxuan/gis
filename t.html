@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>布局
+    </title>
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/Nihilo/Nihilo.css">
+    <style type="text/css">
+
+        html, body {
+            height: 100%; width: 100%;
+            margin: 0; padding: 0;
+        }
+        body{
+            background-color:white; overflow:hidden;
+            font-family: "Kimberley", sans-serif
+        }
+        #header {
+            -moz-border-radius: 5px;
+            margin:2px;
+            padding-top: 15px;
+            padding-right: 15px;
+            background-color:#929761;
+            color:#421b14;
+            font-size:16pt; text-align:center;font-weight:bold;
+            border: solid 2px #79663b;
+            height:35px;
+        }
+        <!-- #subheader {
+                 font-size:small;
+                 color: #cfcfcf;
+                 text-align:right;
+                 padding-right:20px;
+
+             } -->
+        #footer {
+            margin:1px;
+            padding: 2px;
+            background-color:white; color:#2a3537;
+            border: solid 2px #79663b;
+            font-size:10pt; text-align:center;
+            height: 20px;
+        }
+
+        #leftPane{
+            margin:1px;
+            padding:1px;
+            width:150px;
+            color:#3C1700;
+            background-color:white;
+            border: solid 2px #79663b;
+        }
+        #map {
+            margin:1px;
+            border:solid 1px #79663b;
+        }
+        .shadow{
+            -o-border-radius: 6px;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            box-shadow: 8px 8px 16px #323834;
+            -webkit-box-shadow: 8px 8px 16px #323834;
+            -moz-box-shadow: 8px 8px 16px #323834;
+            -o-box-shadow: 8px 8px 16px #323834;
+        }
+
+        .nihilo .dijitAccordionText {
+            margin-left:4px;
+            margin-right:4px;
+            color:#5c8503;
+        }
+
+
+
+
+    </style>
+    <script type="text/javascript">
+        var djConfig = {
+            parseOnLoad: true
+        };
+    </script>
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8">
+    </script>
+    <script type="text/javascript">
+        dojo.require("dijit.dijit"); // optimize: load dijit layer
+        dojo.require("dojo.parser");
+
+        dojo.require("dijit.layout.BorderContainer");
+        dojo.require("dijit.layout.ContentPane");
+        dojo.require("dijit.layout.AccordionContainer");
+        dojo.require("dijit.layout.TabContainer");
+        dojo.require("dijit.form.Button");
+
+        dojo.require("esri.toolbars.navigation");
+        dojo.require("esri.dijit.Scalebar");
+        dojo.require("esri.dijit.OverviewMap");
+
+
+
+
+
+        dojo.require("esri.map");
+
+        var navToolbar;<!-- 定义成全局变量才能使用其中的函数，否则错误 -->
+        var map ;
+        function init() {
+            <!-- map = new esri.Map("map",{nav:true,showInfoWindowOnClick:false,slider:false}); -->
+            map=new esri.Map("map");
+            //var tiledMapServiceLayer = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_Imagery_World_2D/MapServer");
+
+            var url = 'http://localhost:8399/arcgis/rest/services/weather/MapServer';
+            var tiledMapServiceLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url);
+
+            map.addLayer(tiledMapServiceLayer);
+
+            <!-- 导航工具栏 -->
+            navToolbar = new esri.toolbars.Navigation(map);
+            dojo.connect(navToolbar, "onExtentHistoryChange", extentHistoryChangeHandler);
+
+            <!-- 比例尺功能 -->
+            dojo.connect(map, 'onLoad', function(theMap) {
+                dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
+                var scalebar = new esri.dijit.Scalebar({
+                    map: map,
+                    scalebarUnit:'english'
+                });
+            });
+
+            <!-- 鹰眼功能 -->
+            dojo.connect(map, 'onLoad', function(theMap) {
+                //resize the map when the browser resizes
+                dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
+                //add the overview map
+                var overviewMapDijit = new esri.dijit.OverviewMap({
+                    map: map,
+
+                    visible:true
+                });
+                overviewMapDijit.startup();
+            });
+
+            <!-- 坐标显示 -->
+            dojo.connect(map, "onLoad", function() {
+                //after map loads, connect to listen to mouse move & drag events
+                dojo.connect(map, "onMouseMove", showCoordinates);
+                dojo.connect(map, "onMouseDrag", showCoordinates);
+            });
+
+
+        }
+
+        dojo.addOnLoad(init);
+
+        <!-- 保证前后视图可以使用 -->
+        function extentHistoryChangeHandler() {
+            dojo.byId("zoomprev").disabled = navToolbar.isFirstExtent();
+            dojo.byId("zoomnext").disabled = navToolbar.isLastExtent();
+        }
+
+        <!-- 坐标显示函数 -->
+        function showCoordinates(evt) {
+            //get mapPoint from event
+            //The map is in web mercator - modify the map point to display the results in geographic
+            var mp = evt.mapPoint;
+            //display mouse coordinates
+            dojo.byId("info").innerHTML = mp.x + ", " + mp.y;
+        }
+
+    </script>
+</head>
+<body class="nihilo">
+
+<div id="mainWindow" dojotype="dijit.layout.BorderContainer" design="headline" gutters="false" style="width:100%; height:100%;">
+    <!-- 以下是系统的标题 -->
+    <div id="header" dojotype="dijit.layout.ContentPane" region="top" >
+        某某<!-- <div id="subheader">返回首页</div> -->
+    </div>
+
+    <!-- 以下是左边栏的功能设计 -->
+    <div dojotype="dijit.layout.ContentPane" region="left" id="leftPane" splitter="true">
+        <div dojoType="dijit.layout.AccordionContainer">
+
+            <div dojoType="dijit.layout.ContentPane" title="地图浏览">
+                <!-- 以下实现地图浏览功能，可以用CSS来补充显示效果（已经给出了ID） -->
+                <div dojoType="dijit.form.Button" id="zoomin">放大
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.activate(esri.toolbars.Navigation.ZOOM_IN);
+                    </script>
+                </div><br>
+
+                <div dojoType="dijit.form.Button" id="zoomout">缩小
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.activate(esri.toolbars.Navigation.ZOOM_OUT);
+                    </script>
+                </div><br>
+
+                <div dojoType="dijit.form.Button"  id="zoomfullext">全图
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.zoomToFullExtent();
+                    </script>
+                </div><br>
+
+                <div dojoType="dijit.form.Button" id="zoomprev">前一视图
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.zoomToPrevExtent();
+                    </script>
+                </div><br>
+
+                <div dojoType="dijit.form.Button" id="zoomnext">后一视图
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.zoomToNextExtent();
+                    </script>
+                </div><br>
+
+                <div dojoType="dijit.form.Button" id="pan">漫游
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.activate(esri.toolbars.Navigation.PAN);
+                    </script>
+                </div><br>
+
+                <div dojoType="dijit.form.Button" id="deactivate">返回标准状态
+                    <script type="dojo/method" event="onClick">
+                        navToolbar.deactivate();
+                    </script>
+                </div>
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="图层管理">
+                <div dojoType="dijit.layout.TabContainer">
+
+                    <div dojoType="dijit.layout.ContentPane" title="图层控制">
+
+                    </div>
+                    <div dojoType="dijit.layout.ContentPane" title="加载动态图层">
+
+                    </div>
+                </div>
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="动态图例">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="空间查询">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="地图编辑">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="空间分析">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="灾害模拟">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="决策服务">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="专业图表">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="地图打印">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="扩展功能">
+
+            </div>
+
+            <div dojoType="dijit.layout.ContentPane" title="帮助">
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 以下是地图显示部分（地图 比例尺 经纬度 鹰眼等） -->
+    <div id="map" class="shadow" dojotype="dijit.layout.ContentPane" region="center" >
+        <span id="info" style="position:absolute; right:10px; bottom:1px; color:#002; z-index:50;"></span>
+
+    </div>
+
+
+    <!-- 以下是有关系统信息 -->
+    <div id="footer" dojotype="dijit.layout.ContentPane" region="bottom" >
+        某某      </div>
+</div>
+</body>
+</html>

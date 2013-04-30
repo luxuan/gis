@@ -64,7 +64,8 @@ dojo.require("esri.dijit.Measurement");
                     "spatialReference": { "wkid": 4326} })
             });
 
-            var url = 'http://localhost:8399/arcgis/rest/services/ChinaWeatherRailway/MapServer';
+            var url = 'http://localhost:8399/arcgis/rest/services/weather/MapServer';
+            //var url = 'http://localhost:8399/arcgis/rest/services/ChinaWeatherRailway/MapServer';
             serviceLayer = new esri.layers.ArcGISDynamicMapServiceLayer(url);//,{id: "省市"}
             //displayLevels仅适用于tiled和bing层
             layerDefinitions[0] = "RES1_4M_ID > 999999";  //"id":0,"name":"省会城市",

@@ -15,3 +15,9 @@ todo
 DynamicMapServiceLayer/TiledMapServiceLayer图层没有交互监听
 GraphicsLayer(map.graphics，被加入到map中esri.Graphic的集合，Graphic本身没有监听函数)有交互监听,
 
+
+资源目录:
+t.html
+ArcGIS JavaScript API开发的地图 http://blog.csdn.net/cehui115081/article/details/8087333
+  -> ArcGIS JavaScript API开发的地图—重新布局 http://blog.csdn.net/cehui115081/article/details/8112960
+
